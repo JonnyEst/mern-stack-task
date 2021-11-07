@@ -8,6 +8,11 @@ router.get('/', async (req, res) => {
     res.json(task);
 });
 
+router.get('/:id', async(req, res) => {
+    const task = await Task.findById(req.params.id);
+    res.json(task);
+})
+
 router.post('/', async (req, res) => {
     const { title, description } = req.body;
     const task = new Task({title,description});
@@ -15,4 +20,15 @@ router.post('/', async (req, res) => {
     res.json({estatus: 'Task Saved'});
 });
 
+router.put('/:id', async (req, res) => {
+    const {title, description} = req.body;
+    const newTask = {title, description};
+    await Task.findByIdAndUpdate(req.params.id, newTask);
+    res.json({estatus: 'Task Update'});
+})
+
+router.delete('/:id', async (req, res) => {
+    await Task.findByIdAndRemove(req.params.id);
+    res.json({estatus: 'Task Deleted'});
+});
 module.exports = router;
